@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "jelegante"
-  s.version = "0.0.0"
+  s.version = "1.0.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["lpm11"]
-  s.date = "2011-10-02"
+  s.date = "2011-10-03"
   s.description = "Small japanese character/text library."
   s.email = "lpm11r@gmail.com"
   s.extra_rdoc_files = [
@@ -24,6 +24,8 @@ Gem::Specification.new do |s|
     "README.rdoc",
     "Rakefile",
     "VERSION",
+    "example/sample1.rb",
+    "jelegante.gemspec",
     "lib/jelegante.rb",
     "spec/jelegante_spec.rb",
     "spec/spec_helper.rb"
