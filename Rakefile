@@ -17,13 +17,13 @@ Jeweler::Tasks.new do |gem|
   gem.name = "jelegante"
   gem.homepage = "http://github.com/lpm11/jelegante"
   gem.license = "MIT"
-  gem.summary = %Q{Small japanese character/text library.}
-  gem.description = %Q{Small japanese character/text library.}
+  gem.summary = %Q{Guess whether text is japanese or not heuristically.}
+  gem.description = %Q{Guess whether text is japanese or not heuristically.}
   gem.email = "lpm11r@gmail.com"
   gem.authors = ["lpm11"]
   # dependencies defined in Gemfile
 end
-# Jeweler::RubygemsDotOrgTasks.new
+Jeweler::RubygemsDotOrgTasks.new
 
 require 'rspec/core'
 require 'rspec/core/rake_task'
