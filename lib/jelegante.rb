@@ -1,8 +1,10 @@
 #!/bin/env ruby
 #-*- coding: utf-8 -*-
+require("rubygems");
+require("unicode-block");
 
 class Jelegante
-  KANJI_JYOUYOU   = %w[
+  JYOUYOU_KANJI_LIST   = %w[
     亜 哀 愛 悪 握 圧 扱 安 暗 案 以 位 依 偉 囲 委 威 尉 意 慰 易 為 異 移 維
     緯 胃 衣 違 遺 医 井 域 育 一 壱 逸 稲 芋 印 員 因 姻 引 飲 院 陰 隠 韻 右
     宇 羽 雨 渦 浦 運 雲 営 影 映 栄 永 泳 英 衛 詠 鋭 液 疫 益 駅 悦 謁 越 閲
@@ -83,7 +85,7 @@ class Jelegante
     路 露 労 廊 朗 楼 浪 漏 老 郎 六 録 論 和 話 賄 惑 枠 湾 腕
   ].sort();
 
-  KANJI_JINMEI    = %w[
+  JINMEI_KANJI_LIST    = %w[
     丑 丞 串 乃 之 乎 也 云 亘 亙 些 亦 亥 亨 亮 仔 伊 伎 伍 伽 佃 佑 伶 侃 侑
     俄 俠 俣 俐 侶 倭 俺 俱 倦 倖 偲 僅 傭 儲 允 兎 兜 其 冥 冴 冶 凄 凌 凜 凛
     凧 凪 凰 凱 函 刹 劉 劫 勁 勃 勾 匂 勿 匡 廿 卜 卯 卿 厨 厩 叉 叡 叢 叶 只
@@ -126,7 +128,7 @@ class Jelegante
     類 禮 曆 歷 練 鍊 郞 朗 廊 錄
   ].sort();
 
-  KANJI_HYOUGAI   = %w[
+  HYOUGAI_KANJI_LIST   = %w[
     啞 唖 蛙 鴉 埃 挨 曖 靄 軋 斡 按 庵 鞍 闇 已 夷 畏 韋 帷 萎 椅 葦 彙 飴 謂
     閾 溢 鰯 尹 咽 殷 淫 隕 蔭 于 迂 盂 烏 鬱 云 暈 穢 曳 洩 裔 穎 頴 嬰 翳 腋
     曰 奄 宛 怨 俺 冤 袁 婉 焉 堰 淵 焰 筵 厭 鳶 燕 閻 嚥 嗚 凰 嘔 鴨 甕 襖 謳
@@ -173,33 +175,33 @@ class Jelegante
     幷 桝 枡 麺 麵 沪 濾 芦 蘆 蝋 蠟 弯 彎
   ].sort();
 
-  CHARACTERS_HIRAGANA       = "\\p{Hiragana}";
-  CHARACTERS_KATAKANA       = "\\p{Katakana}";
-  CHARACTERS_KANJI          = "\\u{4E00}-\\u{9FFF}\\u{3400}-\\u{4DBF}\\u{20000}-\\u{2A6DF}\\u{2A700}-\\u{2B73F}\\u{F900}-\\u{FAFF}"
-  CHARACTERS_JYOUYOU        = "#{KANJI_JYOUYOU.join('')}";
-  CHARACTERS_JINMEI         = "#{KANJI_JINMEI.join('')}";
-  CHARACTERS_HYOUGAI        = "#{KANJI_HYOUGAI.join('')}";
-  CHARACTERS_POPULAR_KANJI  = "#{CHARACTERS_JYOUYOU}#{CHARACTERS_JINMEI}#{CHARACTERS_HYOUGAI}"
+  HIRAGANA_PROP       = "\\p{Hiragana}";
+  KATAKANA_PROP       = "\\p{Katakana}";
+  KANJI_PROP          = "#{UnicodeBlock::CJK_UNIFIED_IDEOGRAPHS_PROP}#{UnicodeBlock::CJK_UNIFIED_IDEOGRAPHS_EXTENSION_A_PROP}#{UnicodeBlock::CJK_COMPATIBILITY_IDEOGRAPHS_PROP}#{UnicodeBlock::CJK_UNIFIED_IDEOGRAPHS_EXTENSION_B_PROP}#{UnicodeBlock::CJK_UNIFIED_IDEOGRAPHS_EXTENSION_C_PROP}#{UnicodeBlock::CJK_UNIFIED_IDEOGRAPHS_EXTENSION_D_PROP}#{UnicodeBlock::CJK_COMPATIBILITY_IDEOGRAPHS_SUPPLEMENT_PROP}";
+  JYOUYOU_PROP        = "#{JYOUYOU_KANJI_LIST.join('')}";
+  JINMEI_PROP         = "#{JINMEI_KANJI_LIST.join('')}";
+  HYOUGAI_PROP        = "#{HYOUGAI_KANJI_LIST.join('')}";
+  POPULAR_KANJI_PROP  = "#{JYOUYOU_PROP}#{JINMEI_PROP}#{HYOUGAI_PROP}"
 
-  REGEX_HIRAGANA            = /[#{CHARACTERS_HIRAGANA}]/;
-  REGEX_KATAKANA            = /[#{CHARACTERS_KATAKANA}]/;
-  REGEX_KANJI               = /[#{CHARACTERS_KANJI}]/;
-  REGEX_POPULAR_KANJI       = /[#{CHARACTERS_POPULAR_KANJI}]/;
+  HIRAGANA_REGEX            = /\p{Hiragana}/;
+  KATAKANA_REGEX            = /\p{Katakana}/;
+  KANJI_REGEX               = /[#{KANJI_PROP}]/
+  POPULAR_KANJI_REGEX       = /[#{POPULAR_KANJI_PROP}]/;
 
-  REGEX_NO_KANJI            = /[^#{CHARACTERS_KANJI}]/;
-  REGEX_NO_POPULAR_KANJI    = /[^#{CHARACTERS_POPULAR_KANJI}]/;
+  NO_KANJI_REGEX            = /[^#{KANJI_PROP}]/;
+  NO_POPULAR_KANJI_REGEX    = /[^#{POPULAR_KANJI_PROP}]/;
 
   def self.include_hiragana?(text)
-    return !(REGEX_HIRAGANA.match(text).nil?);
+    return !(HIRAGANA_REGEX.match(text).nil?);
   end
   def self.include_katakana?(text)
-    return !(REGEX_KATAKANA.match(text).nil?);
+    return !(KATAKANA_REGEX.match(text).nil?);
   end
   def self.include_kanji?(text)
-    return !(REGEX_KANJI.match(text).nil?);
+    return !(KANJI_REGEX.match(text).nil?);
   end
   def self.include_popular_kanji?(text)
-    return !(REGEX_POPULAR_KANJI.match(text).nil?);
+    return !(POPULAR_KANJI_REGEX.match(text).nil?);
   end
 
   # 簡易日本語判定
@@ -207,7 +209,7 @@ class Jelegante
   #  ・漢字を含むが、常用漢字・人名漢字・表外漢字以外の漢字を含まない
   def self.japanese?(text)
     return true if (self.include_hiragana?(text) || self.include_katakana?(text));
-    return true if (text.gsub(REGEX_NO_KANJI,"") =~ /^[#{CHARACTERS_POPULAR_KANJI}]+$/);
+    return true if (text.gsub(NO_KANJI_REGEX,"") =~ /^[#{POPULAR_KANJI_PROP}]+$/);
     return false;
   end
 end
