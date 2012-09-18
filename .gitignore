@@ -49,3 +49,5 @@ pkg
 
 Gemfile.lock
 
+local_test/
+
