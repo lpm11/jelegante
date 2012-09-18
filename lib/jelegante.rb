@@ -174,6 +174,8 @@ class Jelegante
     撹 攪 麹 麴 鹸 鹼 噛 嚙 繍 繡 蒋 蔣 醤 醬 曽 曾 掻 搔 痩 瘦 祷 禱 屏 屛 并
     幷 桝 枡 麺 麵 沪 濾 芦 蘆 蝋 蠟 弯 彎
   ].sort();
+  
+  POPULAR_KANJI_LIST = (JYOUYOU_KANJI_LIST + JINMEI_KANJI_LIST + HYOUGAI_KANJI_LIST).sort();
 
   HIRAGANA_PROP       = "\\p{Hiragana}";
   KATAKANA_PROP       = "\\p{Katakana}";
@@ -181,7 +183,7 @@ class Jelegante
   JYOUYOU_PROP        = "#{JYOUYOU_KANJI_LIST.join('')}";
   JINMEI_PROP         = "#{JINMEI_KANJI_LIST.join('')}";
   HYOUGAI_PROP        = "#{HYOUGAI_KANJI_LIST.join('')}";
-  POPULAR_KANJI_PROP  = "#{JYOUYOU_PROP}#{JINMEI_PROP}#{HYOUGAI_PROP}"
+  POPULAR_KANJI_PROP  = "#{POPULAR_KANJI_LIST.join('')}"
 
   HIRAGANA_REGEX            = /\p{Hiragana}/;
   KATAKANA_REGEX            = /\p{Katakana}/;
@@ -209,7 +211,11 @@ class Jelegante
   #  ・漢字を含むが、常用漢字・人名漢字・表外漢字以外の漢字を含まない
   def self.japanese?(text)
     return true if (self.include_hiragana?(text) || self.include_katakana?(text));
-    return true if (text.gsub(NO_KANJI_REGEX,"") =~ /^[#{POPULAR_KANJI_PROP}]+$/);
-    return false;
+
+    # return true if (text.gsub(NO_KANJI_REGEX,"") =~ /^[#{POPULAR_KANJI_PROP}]+$/);
+    kanjis = text.gsub(NO_KANJI_REGEX,"");
+    return false if (kanjis.empty?);
+    kanjis.each_char { |c| return false if (!POPULAR_KANJI_LIST.include?(c)); }
+    return true;
   end
 end
