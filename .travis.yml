@@ -1,5 +1,5 @@
 language: ruby
-perl:
+ruby:
   - "1.9.3"
   - "2.0.0"
 notifications:
