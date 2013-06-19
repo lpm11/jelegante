@@ -1,0 +1,10 @@
+language: ruby
+perl:
+  - "1.9.3"
+  - "2.0.0"
+notifications:
+  irc:
+    channels:
+      - "irc.lpm11.net#lpm11"
+    on_success: change
+    on_failure: always
