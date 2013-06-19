@@ -1,4 +1,5 @@
 = jelegante
+{<img src="https://travis-ci.org/lpm11/jelegante.png" />}[https://travis-ci.org/lpm11/jelegante] {<img src="https://codeclimate.com/github/lpm11/jelegante.png" />}[https://codeclimate.com/github/lpm11/jelegante]
 
 Guess whether text is japanese or not heuristically.
 
